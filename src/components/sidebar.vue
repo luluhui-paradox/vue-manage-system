@@ -73,6 +73,12 @@ const items = [
         index: '/tabs',
         title: '站内消息',
         permiss: '3',
+    },
+    {
+        icon: 'DocumentCopy',
+        index: '/stereomatch',
+        title: '林木三维测量',
+        permiss: '3',
     }
 ];
 

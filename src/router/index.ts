@@ -47,6 +47,15 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import(/* webpackChunkName: "user" */ '../views/user.vue'),
             },
+            {
+                path: '/stereomatch',
+                name: 'stereomatch',
+                meta: {
+                    title: '林木三维测量',
+                },
+                component: () => import(/* webpackChunkName: "stereomatch" */ '../views/stereomatch.vue'),
+            },
+
         ],
     },
     {
