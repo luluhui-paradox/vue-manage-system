@@ -1,7 +1,7 @@
 <template>
 	<div class="login-wrap">
 		<div class="ms-login">
-			<div class="ms-title">后台管理系统</div>
+			<div class="ms-title">林木三维信息测量与识别系统</div>
 			<el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
 				<el-form-item prop="username">
 					<el-input v-model="param.username" placeholder="username">
@@ -25,7 +25,7 @@
 				<div class="login-btn">
 					<el-button type="primary" @click="submitForm(login)">登录</el-button>
 				</div>
-				<p class="login-tips">Tips : 用户名和密码随便填。</p>
+				<!-- <p class="login-tips">Tips : 用户名和密码随便填。</p> -->
 			</el-form>
 		</div>
 	</div>
@@ -72,6 +72,19 @@ const submitForm = (formEl: FormInstance | undefined) => {
 			const keys = permiss.defaultList[param.username == 'admin' ? 'admin' : 'user'];
 			permiss.handleSet(keys);
 			localStorage.setItem('ms_keys', JSON.stringify(keys));
+			let temp_user_desc=localStorage.getItem('user_desc');
+			if(temp_user_desc==null){
+				localStorage.setItem('user_desc',"🐬totsugeki🐬");
+			}
+			let temp_user_phone=localStorage.getItem('user_phone');
+			if(temp_user_phone==null){
+				localStorage.setItem('user_phone',"13633334444");
+			}
+			let temp_user_email=localStorage.getItem('user_email');
+			if(temp_user_email==null){
+				localStorage.setItem('user_email',"wdnmd@gmail.com");
+			}
+			
 			router.push('/');
 		} else {
 			ElMessage.error('登录成功');
@@ -89,7 +102,7 @@ tags.clearTags();
 	position: relative;
 	width: 100%;
 	height: 100%;
-	background-image: url(../assets/img/login-bg.jpg);
+	background-image: url(../assets/img/login.jpg);
 	background-size: 100%;
 }
 .ms-title {

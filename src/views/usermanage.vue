@@ -2,13 +2,14 @@
 	<div>
 		<div class="container">
 			<div class="handle-box">
-				<el-select v-model="query.address" placeholder="地址" class="handle-select mr10">
-					<el-option key="1" label="广东省" value="广东省"></el-option>
-					<el-option key="2" label="湖南省" value="湖南省"></el-option>
+				<el-select v-model="query.address" placeholder="权限" class="handle-select mr10">
+					<el-option key="1" label="管理员" value="管理员"></el-option>
+					<el-option key="2" label="员工" value="员工"></el-option>
+					<el-option key="3" label="普通用户" value="普通用户"></el-option>
 				</el-select>
 				<el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
 				<el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-				<el-button type="primary" :icon="Plus">新增</el-button>
+				<el-button type="primary" :icon="Plus" @click="userAddHandleEdit()">新增</el-button>
 			</div>
 			<el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
 				<el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
@@ -16,29 +17,10 @@
 				<el-table-column label="账户余额">
 					<template #default="scope">￥{{ scope.row.money }}</template>
 				</el-table-column>
-				<el-table-column label="头像(查看大图)" align="center">
-					<template #default="scope">
-						<el-image
-							class="table-td-thumb"
-							:src="scope.row.thumb"
-							:z-index="10"
-							:preview-src-list="[scope.row.thumb]"
-							preview-teleported
-						>
-						</el-image>
-					</template>
-				</el-table-column>
-				<el-table-column prop="address" label="地址"></el-table-column>
-				<el-table-column label="状态" align="center">
-					<template #default="scope">
-						<el-tag
-							:type="scope.row.state === '成功' ? 'success' : scope.row.state === '失败' ? 'danger' : ''"
-						>
-							{{ scope.row.state }}
-						</el-tag>
-					</template>
-				</el-table-column>
-
+				<el-table-column prop="phone" label="手机号"></el-table-column>
+				<el-table-column prop="email" label="邮箱"></el-table-column>
+				<el-table-column prop="role" label="权限"></el-table-column>
+				<el-table-column prop="proLevel" label="职级"></el-table-column>
 				<el-table-column prop="date" label="注册时间"></el-table-column>
 				<el-table-column label="操作" width="220" align="center">
 					<template #default="scope">
@@ -69,14 +51,47 @@
 				<el-form-item label="用户名">
 					<el-input v-model="form.name"></el-input>
 				</el-form-item>
-				<el-form-item label="地址">
-					<el-input v-model="form.address"></el-input>
+				<el-form-item label="手机号">
+					<el-input v-model="form.phone"></el-input>
+				</el-form-item>
+				<el-form-item label="邮箱">
+					<el-input v-model="form.email"></el-input>
+				</el-form-item>
+				<el-form-item label="职级">
+					<el-input v-model="form.proLevel"></el-input>
 				</el-form-item>
 			</el-form>
 			<template #footer>
 				<span class="dialog-footer">
 					<el-button @click="editVisible = false">取 消</el-button>
 					<el-button type="primary" @click="saveEdit">确 定</el-button>
+				</span>
+			</template>
+		</el-dialog>
+
+		<!-- 添加用户弹出框 -->
+		<el-dialog title="编辑" v-model="addUserVisible" width="30%">
+			<el-form label-width="70px">
+				<el-form-item label="用户名">
+					<el-input v-model="adduser_form.name"></el-input>
+				</el-form-item>
+				<el-form-item label="手机号">
+					<el-input v-model="adduser_form.phone"></el-input>
+				</el-form-item>
+				<el-form-item label="邮箱">
+					<el-input v-model="adduser_form.email"></el-input>
+				</el-form-item>
+				<el-form-item label="职级">
+					<el-input v-model="adduser_form.proLevel"></el-input>
+				</el-form-item>
+				<el-form-item label="权限">
+					<el-input v-model="adduser_form.role"></el-input>
+				</el-form-item>
+			</el-form>
+			<template #footer>
+				<span class="dialog-footer">
+					<el-button @click="addUserVisible = false">取 消</el-button>
+					<el-button type="primary" @click="userAddSaveEdit">确 定</el-button>
 				</span>
 			</template>
 		</el-dialog>
@@ -93,9 +108,11 @@ interface TableItem {
 	id: number;
 	name: string;
 	money: string;
-	state: string;
+	email:string;
+	phone:string;
+	role:string;
 	date: string;
-	address: string;
+	proLevel: string;
 }
 
 const query = reactive({
@@ -143,20 +160,66 @@ const handleDelete = (index: number) => {
 const editVisible = ref(false);
 let form = reactive({
 	name: '',
-	address: ''
+	phone:'',
+	email:'',
+	proLevel:'',
 });
 let idx: number = -1;
 const handleEdit = (index: number, row: any) => {
 	idx = index;
 	form.name = row.name;
-	form.address = row.address;
+	form.phone = row.phone;
+	form.email = row.email;
+	form.proLevel = row.proLevel;
 	editVisible.value = true;
 };
 const saveEdit = () => {
 	editVisible.value = false;
 	ElMessage.success(`修改第 ${idx + 1} 行成功`);
 	tableData.value[idx].name = form.name;
-	tableData.value[idx].address = form.address;
+	tableData.value[idx].phone = form.phone;
+	tableData.value[idx].email = form.email;
+	tableData.value[idx].proLevel = form.proLevel;
+};
+
+// 表格新增元素编辑时弹窗和保存
+const tableitem_adder = ref<TableItem>({
+	id: 0,
+	name: "string",
+	money: "0",
+	email:"string",
+	phone:"string",
+	role:"string",
+	date: "2023-11-25",
+	proLevel: "工人"
+});
+let adduser_form = reactive({
+	name: '',
+	phone:'',
+	email:'',
+	proLevel:'',
+	role:''
+});
+const addUserVisible=ref(false);
+const userAddHandleEdit = () => {
+	addUserVisible.value = true;
+};
+const userAddSaveEdit = () => {
+	tableitem_adder.value.id=tableData.value.length+1;
+	tableitem_adder.value.name=adduser_form.name;
+	tableitem_adder.value.phone=adduser_form.phone;
+	tableitem_adder.value.email=adduser_form.email;
+	tableitem_adder.value.proLevel=adduser_form.proLevel;
+	tableitem_adder.value.role=adduser_form.role;
+	addUserVisible.value = false;
+	ElMessageBox.alert('添加用户成功', '提示', {
+		// if you want to disable its autofocus
+		// autofocus: false,
+		confirmButtonText: 'OK',
+  	})
+	tableData.value.push(tableitem_adder.value);
+	pageTotal.value=tableData.value.length;
+
 };
 </script>
 

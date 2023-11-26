@@ -16,7 +16,7 @@
 							</span>
 						</div>
 						<div class="info-name">{{ name }}</div>
-						<div class="info-desc">不可能！我的代码怎么可能会有bug！</div>
+						<div class="info-desc">{{describe}}</div>
 					</div>
 				</el-card>
 			</el-col>
@@ -29,14 +29,20 @@
 					</template>
 					<el-form label-width="90px">
 						<el-form-item label="用户名："> {{ name }} </el-form-item>
-						<el-form-item label="旧密码：">
+						<!-- <el-form-item label="旧密码：">
 							<el-input type="password" v-model="form.old"></el-input>
 						</el-form-item>
 						<el-form-item label="新密码：">
 							<el-input type="password" v-model="form.new"></el-input>
+						</el-form-item> -->
+						<el-form-item label="手机号:">
+							<el-input v-model="form.phone"  ></el-input>
+						</el-form-item>
+						<el-form-item label="邮箱:">
+							<el-input v-model="form.email"  ></el-input>
 						</el-form-item>
 						<el-form-item label="个人简介：">
-							<el-input v-model="form.desc"></el-input>
+							<el-input v-model="form.desc"  ></el-input>
 						</el-form-item>
 						<el-form-item>
 							<el-button type="primary" @click="onSubmit">保存</el-button>
@@ -70,17 +76,37 @@
 
 <script setup lang="ts" name="user">
 import { reactive, ref } from 'vue';
+import { ElMessage, ElMessageBox } from 'element-plus'
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
-import avatar from '../assets/img/img.jpg';
+import avatar from '../assets/img/may.png';
 
 const name = localStorage.getItem('ms_username');
+const describe=ref(localStorage.getItem('user_desc'));
 const form = reactive({
 	old: '',
 	new: '',
-	desc: '不可能！我的代码怎么可能会有bug！'
+	desc: describe.value,
+	phone:localStorage.getItem('user_phone'),
+	email:localStorage.getItem('user_email'),
 });
-const onSubmit = () => {};
+const onSubmit = () => {
+	describe.value=form.desc;
+	if(form.desc!=null){
+		localStorage.setItem('user_desc',form.desc);
+	}
+	if(form.phone!=null){
+		localStorage.setItem('user_phone',form.phone);
+	}
+	if(form.email!=null){
+		localStorage.setItem('user_email',form.email);
+	}
+	ElMessageBox.alert('修改成功', '提示', {
+		// if you want to disable its autofocus
+		// autofocus: false,
+		confirmButtonText: 'OK',
+  	})
+};
 
 const avatarImg = ref(avatar);
 const imgSrc = ref('');

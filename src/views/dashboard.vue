@@ -12,26 +12,26 @@
 					</div>
 					<div class="user-info-list">
 						上次登录时间：
-						<span>2022-10-01</span>
+						<span>2023-11-25</span>
 					</div>
 					<div class="user-info-list">
 						上次登录地点：
-						<span>东莞</span>
+						<span>日本</span>
 					</div>
 				</el-card>
 				<el-card shadow="hover" style="height: 252px">
 					<template #header>
 						<div class="clearfix">
-							<span>语言详情</span>
+							<span>访问时间段详情</span>
 						</div>
 					</template>
-					Vue
-					<el-progress :percentage="79.4" color="#42b983"></el-progress>
-					TypeScript
-					<el-progress :percentage="14" color="#f1e05a"></el-progress>
-					CSS
+					8:00 - 12:00
+					<el-progress :percentage="34.4" color="#42b983"></el-progress>
+					12:00 - 18:00
+					<el-progress :percentage="58" color="#f1e05a"></el-progress>
+					18:00 - 24:00
 					<el-progress :percentage="5.6"></el-progress>
-					HTML
+					24:00 - 8:00
 					<el-progress :percentage="1" color="#f56c6c"></el-progress>
 				</el-card>
 			</el-col>
@@ -54,7 +54,7 @@
 								<el-icon class="grid-con-icon"><ChatDotRound /></el-icon>
 								<div class="grid-cont-right">
 									<div class="grid-num">321</div>
-									<div>系统消息</div>
+									<div>林木测量访问量</div>
 								</div>
 							</div>
 						</el-card>
@@ -65,7 +65,7 @@
 								<el-icon class="grid-con-icon"><Goods /></el-icon>
 								<div class="grid-cont-right">
 									<div class="grid-num">5000</div>
-									<div>商品数量</div>
+									<div>林木叶片识别访问量</div>
 								</div>
 							</div>
 						</el-card>
@@ -75,7 +75,7 @@
 					<template #header>
 						<div class="clearfix">
 							<span>待办事项</span>
-							<el-button style="float: right; padding: 3px 0" text>添加</el-button>
+							<el-button style="float: right; padding: 3px 0" text v-on:click="onadditem">添加</el-button>
 						</div>
 					</template>
 
@@ -101,7 +101,7 @@
 				</el-card>
 			</el-col>
 		</el-row>
-		<el-row :gutter="20">
+		<!-- <el-row :gutter="20">
 			<el-col :span="12">
 				<el-card shadow="hover">
 					<schart ref="bar" class="schart" canvasId="bar" :options="options"></schart>
@@ -112,87 +112,68 @@
 					<schart ref="line" class="schart" canvasId="line" :options="options2"></schart>
 				</el-card>
 			</el-col>
-		</el-row>
+		</el-row> -->
+		<!-- 添加代办弹出框 -->
+		<el-dialog title="待办事项添加" v-model="additemVisible" width="30%">
+			<el-form label-width="70px">
+				<el-form-item label="事项名称">
+					<el-input v-model="form.title"></el-input>
+				</el-form-item>
+			</el-form>
+			<template #footer>
+				<span class="dialog-footer">
+					<el-button @click="additemVisible = false">取 消</el-button>
+					<el-button type="primary" @click="itemAddSaveEdit">确 定</el-button>
+				</span>
+			</template>
+		</el-dialog>
 	</div>
 </template>
 
 <script setup lang="ts" name="dashboard">
 import Schart from 'vue-schart';
-import { reactive } from 'vue';
-import imgurl from '../assets/img/img.jpg';
+import { ref,reactive } from 'vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import imgurl from '../assets/img/may.png';
 
 const name = localStorage.getItem('ms_username');
 const role: string = name === 'admin' ? '超级管理员' : '普通用户';
 
-const options = {
-	type: 'bar',
-	title: {
-		text: '最近一周各品类销售图'
-	},
-	xRorate: 25,
-	labels: ['周一', '周二', '周三', '周四', '周五'],
-	datasets: [
-		{
-			label: '家电',
-			data: [234, 278, 270, 190, 230]
-		},
-		{
-			label: '百货',
-			data: [164, 178, 190, 135, 160]
-		},
-		{
-			label: '食品',
-			data: [144, 198, 150, 235, 120]
-		}
-	]
-};
-const options2 = {
-	type: 'line',
-	title: {
-		text: '最近几个月各品类销售趋势图'
-	},
-	labels: ['6月', '7月', '8月', '9月', '10月'],
-	datasets: [
-		{
-			label: '家电',
-			data: [234, 278, 270, 190, 230]
-		},
-		{
-			label: '百货',
-			data: [164, 178, 150, 135, 160]
-		},
-		{
-			label: '食品',
-			data: [74, 118, 200, 235, 90]
-		}
-	]
-};
 const todoList = reactive([
 	{
-		title: '今天要修复100个bug',
+		title: '【重要】充值',
 		status: false
 	},
 	{
-		title: '今天要修复100个bug',
-		status: false
-	},
-	{
-		title: '今天要写100行代码加几个bug吧',
-		status: false
-	},
-	{
-		title: '今天要修复100个bug',
-		status: false
-	},
-	{
-		title: '今天要修复100个bug',
+		title: '【重要】修改密码',
 		status: true
 	},
-	{
-		title: '今天要写100行代码加几个bug吧',
-		status: true
-	}
 ]);
+const additemVisible=ref(false);
+let form = reactive({
+	title: '',
+	status:false
+});
+const onadditem=()=>{
+	additemVisible.value=true;
+}
+const itemAddSaveEdit=()=>{
+	additemVisible.value=false;
+	let tenp_form={
+		title: '',
+		status:false
+	}
+	tenp_form.title=form.title;
+	tenp_form.status=form.status;
+	todoList.push(tenp_form);
+	ElMessageBox.alert('添加成功', '提示', {
+		// if you want to disable its autofocus
+		// autofocus: false,
+		confirmButtonText: 'OK',
+  	})
+
+}
+
 </script>
 
 <style scoped>

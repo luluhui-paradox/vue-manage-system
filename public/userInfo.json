@@ -1,0 +1,65 @@
+{
+    "list": [
+        {
+            "id": 1,
+            "name": "string",
+            "money": 12,
+            "email":"tring",
+            "phone":"string",
+            "role":"管理员",
+            "date": "2023-11-25",
+            "proLevel": "string"
+        },
+        {
+            "id": 2,
+            "name": "string",
+            "money": 12,
+            "email":"tring",
+            "phone":"string",
+            "role":"管理员",
+            "date": "2023-11-25",
+            "proLevel": "string"
+        },
+        {
+            "id": 3,
+            "name": "string",
+            "money": 12,
+            "email":"tring",
+            "phone":"string",
+            "role":"员工",
+            "date": "2023-11-25",
+            "proLevel": "string"
+        },
+        {
+            "id": 4,
+            "name": "string",
+            "money": 12,
+            "email":"tring",
+            "phone":"string",
+            "role":"普通用户",
+            "date": "2023-11-25",
+            "proLevel": "string"
+        },
+        {
+            "id": 5,
+            "name": "string",
+            "money": 12,
+            "email":"tring",
+            "phone":"string",
+            "role":"普通用户",
+            "date": "2023-11-25",
+            "proLevel": "string"
+        },
+        {
+            "id": 6,
+            "name": "string",
+            "money": 12,
+            "email":"tring",
+            "phone":"string",
+            "role":"管理员",
+            "date": "2023-11-25",
+            "proLevel": "string"
+        }
+    ],
+    "pageTotal": 6
+}
