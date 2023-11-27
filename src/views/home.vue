@@ -3,7 +3,7 @@
 	<v-sidebar />
 	<div class="content-box" :class="{ 'content-collapse': sidebar.collapse }">
 		<v-tags></v-tags>
-		<div class="content">
+		<div style="rootbase" class="content">
 			<router-view v-slot="{ Component }">
 				<transition name="move" mode="out-in">
 					<keep-alive :include="tags.nameList">
@@ -20,7 +20,13 @@ import { useTagsStore } from '../store/tags';
 import vHeader from '../components/header.vue';
 import vSidebar from '../components/sidebar.vue';
 import vTags from '../components/tags.vue';
+import bgpic from '../assets/img/login.jpg';
 
 const sidebar = useSidebarStore();
 const tags = useTagsStore();
 </script>
+<style>
+#rootbase{
+	background-image: url("../assets/img/login.jpg");
+}
+</style>
