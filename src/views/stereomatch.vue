@@ -87,8 +87,8 @@
                     <template #header>
                         <el-button-group>
                             <el-button type="primary" @click="openRes1Dialog">林木测距</el-button>
-                            <el-button type="primary" @click="heightIsVisible=true">立木高度测量</el-button>
-                            <el-button type="primary" @click="circleIsVisible=true">胸径测量</el-button>
+                            <el-button type="primary" @click="openRes2Dialog">立木高度测量</el-button>
+                            <el-button type="primary" @click="openRes3Dialog">胸径测量</el-button>
                             <el-button type="danger" @click="handleAllClear">清空</el-button>
                         </el-button-group>
                     </template>
@@ -136,17 +136,49 @@
             </div>
         </el-dialog>
         <!-- 立木高度测量 -->
-        <el-dialog v-model="heightIsVisible" title="立木高度测量">
-            <div>
-                <el-button @click="heightIsVisible = false">Cancel</el-button>
-                <el-button type="primary" @click="heightIsVisible = false">Confirm</el-button>
+        <el-dialog width="50%" v-model="heightIsVisible" title="立木高度测量">
+            <div v-loading="loading">
+                <el-row>
+                    <el-col :span="18">
+                        <div>
+                            <canvas @mouseup="onRes2CanvasClick" width="480" height="320"  ref="res2Canvas" class="canvas"></canvas>
+                        </div>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-row>
+                            <span>{{heightShowLabel}}:</span>
+                            <el-input v-model="heightBasePoint" disabled></el-input>
+                        </el-row>
+                        <el-row>
+                            <el-button @click="heightIsVisible = false">Cancel</el-button>
+                            <el-button type="primary" @click="onRes2CanvasConfirm">Confirm</el-button>
+                        </el-row>
+                        
+                    </el-col>
+                </el-row>
             </div>
         </el-dialog>
         <!-- 胸径测量 -->
-        <el-dialog v-model="circleIsVisible" title="胸径测量">
-            <div>
-                <el-button @click="circleIsVisible = false">Cancel</el-button>
-                <el-button type="primary" @click="circleIsVisible = false">Confirm</el-button>
+        <el-dialog width="50%" v-model="circleIsVisible" title="胸径测量">
+            <div v-loading="loading">
+                <el-row>
+                    <el-col :span="18">
+                        <div>
+                            <canvas @mouseup="onRes3CanvasClick" width="480" height="320"  ref="res3Canvas" class="canvas"></canvas>
+                        </div>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-row>
+                            <span>胸径测量</span>
+                            <el-input v-model="circleBasePoint" disabled></el-input>
+                        </el-row>
+                        <el-row>
+                            <el-button @click="circleIsVisible = false">Cancel</el-button>
+                            <el-button type="primary" @click="onRes3CanvasConfirm">Confirm</el-button>
+                        </el-row>
+                        
+                    </el-col>
+                </el-row>
             </div>
         </el-dialog>
     </div>
@@ -182,9 +214,8 @@ const loading=ref(false);
 
 const depthBasePoint=ref("");
 const heightBasePoint=ref("");
-const heightEndPoint=ref("");
 const circleBasePoint=ref("");
-
+const heightShowLabel=ref("立木基点");
 onMounted(() => {
     console.log(res1Canvas.value)
 })
@@ -244,8 +275,19 @@ const handleAllClear=()=>{
   })
 }
 
+//判断图像是否存在
+function isDualPic(){
+    console.log("leftImgUrl.value:"+leftImgUrl.value)
+    console.log("RightImgUrl.value:"+RightImgUrl.value)
+    return leftImgUrl.value!=""&&RightImgUrl.value!="";
+}
+
+//林木测距
 const openRes1Dialog=()=>{
-    
+    if(!isDualPic()){
+        ElMessageBox.alert("没图你测你码呢")
+        return;
+    }
     depthIsVisible.value=true
     nextTick(()=>{
         let ctx=res1Canvas.value.getContext('2d');
@@ -297,6 +339,134 @@ const onRes1CanvasConfirm=()=>{
         loading.value=false;
         //add data
         resultForm.result1="123"
+        //show message
+        ElMessage.info("测量成功")
+    },2000)
+}
+
+//立木测距
+const openRes2Dialog=()=>{
+    if(!isDualPic()){
+        ElMessageBox.alert("没图你测你码呢")
+        return;
+    }
+    heightIsVisible.value=true
+    nextTick(()=>{
+        let ctx=res2Canvas.value.getContext('2d');
+        let img = new Image()
+        img.src = leftImgUrl.value
+        img.onload = function(){
+            if(img.complete){
+                //  根据图像重新设定了canvas的长宽
+                res2Canvas.value.setAttribute("width",img.width/2)
+                res2Canvas.value.setAttribute("height",img.height/2)
+                //  绘制图片
+                ctx.drawImage(img,0,0,img.width/2,img.height/2)
+            }
+        }
+    })
+}
+const onRes2CanvasClick=(e)=>{
+    let ctx=res2Canvas.value.getContext('2d');
+    //ctx.clearRect(0,0,640,480)
+    let img = new Image()
+    img.src = leftImgUrl.value
+    img.onload = function(){
+        if(img.complete){
+            //  根据图像重新设定了canvas的长宽
+            res2Canvas.value.setAttribute("width",img.width/2)
+            res2Canvas.value.setAttribute("height",img.height/2)
+            //  绘制图片
+            ctx.drawImage(img,0,0,img.width/2,img.height/2)
+            //画点
+            ctx=res2Canvas.value.getContext('2d')
+            let x_pos=e.offsetX
+            let y_pos=e.offsetY
+            heightBasePoint.value=x_pos+":"+y_pos
+            ctx.arc(x_pos,y_pos,5,0,2*Math.PI);
+            ctx.fill()
+            ctx.stroke()
+        }
+    }
+}
+
+const onRes2CanvasConfirm=()=>{
+    if(heightShowLabel.value=="立木基点"){
+        heightIsVisible.value=false;
+        heightShowLabel.value="立木高度测距点"
+        openRes2Dialog()
+        return;
+    }
+    heightIsVisible.value=true;
+    //loading
+    loading.value=true;
+    //set time
+    setTimeout(()=>{
+        heightIsVisible.value=false;
+        loading.value=false;
+        heightShowLabel.value="立木基点"
+        //add data
+        resultForm.result2="456"
+        //show message
+        ElMessage.info("测量成功")
+    },2000)
+}
+//胸径测量
+const openRes3Dialog=()=>{
+    if(!isDualPic()){
+        ElMessageBox.alert("没图你测你码呢")
+        return;
+    }
+    circleIsVisible.value=true
+    nextTick(()=>{
+        let ctx=res3Canvas.value.getContext('2d');
+        let img = new Image()
+        img.src = leftImgUrl.value
+        img.onload = function(){
+            if(img.complete){
+                //  根据图像重新设定了canvas的长宽
+                res3Canvas.value.setAttribute("width",img.width/2)
+                res3Canvas.value.setAttribute("height",img.height/2)
+                //  绘制图片
+                ctx.drawImage(img,0,0,img.width/2,img.height/2)
+            }
+        }
+    })
+}
+const onRes3CanvasClick=(e)=>{
+    let ctx=res3Canvas.value.getContext('2d');
+    //ctx.clearRect(0,0,640,480)
+    let img = new Image()
+    img.src = leftImgUrl.value
+    img.onload = function(){
+        if(img.complete){
+            //  根据图像重新设定了canvas的长宽
+            res3Canvas.value.setAttribute("width",img.width/2)
+            res3Canvas.value.setAttribute("height",img.height/2)
+            //  绘制图片
+            ctx.drawImage(img,0,0,img.width/2,img.height/2)
+            //画点
+            ctx=res3Canvas.value.getContext('2d')
+            let x_pos=e.offsetX
+            let y_pos=e.offsetY
+            circleBasePoint.value=x_pos+":"+y_pos
+            ctx.arc(x_pos,y_pos,5,0,2*Math.PI);
+            ctx.fill()
+            ctx.stroke()
+        }
+    }
+}
+
+const onRes3CanvasConfirm=()=>{
+    circleIsVisible.value=true;
+    //loading
+    loading.value=true;
+    //set time
+    setTimeout(()=>{
+        circleIsVisible.value=false;
+        loading.value=false;
+        //add data
+        resultForm.result3="789"
         //show message
         ElMessage.info("测量成功")
     },2000)

@@ -79,6 +79,12 @@ const items = [
         index: '/stereomatch',
         title: '林木三维测量',
         permiss: '3',
+    },
+    {
+        icon: 'DocumentCopy',
+        index: '/leafRecognize',
+        title: '林木叶片识别',
+        permiss: '3',
     }
 ];
 

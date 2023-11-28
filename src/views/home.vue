@@ -27,6 +27,9 @@ const tags = useTagsStore();
 </script>
 <style>
 #rootbase{
+	height: 100%;
+	width: 100;
 	background-image: url("../assets/img/login.jpg");
+	background-size: 100%;
 }
 </style>

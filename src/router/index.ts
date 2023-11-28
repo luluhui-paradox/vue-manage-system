@@ -55,7 +55,14 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import(/* webpackChunkName: "stereomatch" */ '../views/stereomatch.vue'),
             },
-
+            {
+                path: '/leafRecognize',
+                name: 'leafRecognize',
+                meta: {
+                    title: '林木叶片识别',
+                },
+                component: () => import(/* webpackChunkName: "leafRecognize" */ '../views/leafRecognize.vue'),
+            },
         ],
     },
     {
