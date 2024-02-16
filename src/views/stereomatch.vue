@@ -92,6 +92,25 @@
                             <el-button type="danger" @click="handleAllClear">清空</el-button>
                         </el-button-group>
                     </template>
+                    <div>
+                        <el-upload
+                            ref="uploadcali"
+                            class="upload-demo"
+                            action="#"
+                            :limit="1"
+                            :on-exceed="handleExceed"
+                            :auto-upload="false"
+                        >
+                            <template #trigger>
+                            <el-button type="primary">读取相机参数</el-button>
+                            </template>
+                            <template #tip>
+                            <div class="el-upload__tip text-red">
+                                仅支持txt、json文件
+                            </div>
+                            </template>
+                        </el-upload>
+                    </div>
                     <!-- result list -->
                     <div>
                         <el-form v-model="resultForm">
@@ -190,11 +209,13 @@ import { ref, reactive,onMounted ,nextTick} from 'vue';
 import { useTagsStore } from '../store/tags';
 import { usePermissStore } from '../store/permiss';
 import { useRouter } from 'vue-router';
-import { ElMessage, ElMessageBox } from 'element-plus';
-import type { Action, FormInstance, FormRules, UploadFile, UploadFiles } from 'element-plus';
+import { ElMessage, ElMessageBox,genFileId } from 'element-plus';
+import type { Action, FormInstance, FormRules, UploadFile, UploadFiles,UploadInstance, UploadProps, UploadRawFile } from 'element-plus';
 import { Lock, User } from '@element-plus/icons-vue';
 import { throttledWatch } from '@vueuse/shared';
 import App from '../App.vue';
+
+const uploadcali = ref<UploadInstance>()
 
 const leftImgUrl=ref("");
 const RightImgUrl=ref("");
@@ -274,6 +295,14 @@ const handleAllClear=()=>{
     },
   })
 }
+
+const handleExceed: UploadProps['onExceed'] = (files) => {
+  uploadcali.value!.clearFiles()
+  const file = files[0] as UploadRawFile
+  file.uid = genFileId()
+  uploadcali.value!.handleStart(file)
+}
+
 
 //判断图像是否存在
 function isDualPic(){
