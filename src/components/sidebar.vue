@@ -85,7 +85,14 @@ const items = [
         index: '/leafRecognize',
         title: '林木叶片识别',
         permiss: '3',
+    },
+    {
+        icon: 'DocumentCopy',
+        index: '/workHistory',
+        title: '历史查询',
+        permiss: '3',
     }
+
 ];
 
 const route = useRoute();

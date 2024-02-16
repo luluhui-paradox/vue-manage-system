@@ -63,6 +63,14 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import(/* webpackChunkName: "leafRecognize" */ '../views/leafRecognize.vue'),
             },
+            {
+                path: '/workHistory',
+                name: 'workHistory',
+                meta: {
+                    title: '历史查询',
+                },
+                component: () => import(/* webpackChunkName: "leafRecognize" */ '../views/workHistory.vue'),
+            },
         ],
     },
     {

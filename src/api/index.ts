@@ -6,3 +6,10 @@ export const fetchData = () => {
         method: 'get'
     });
 };
+
+export const getWorkHistory = () => {
+    return request({
+        url: '/workHistoryList.json',
+        method: 'get'
+    });
+};

@@ -1,0 +1,41 @@
+{
+    "list": [
+        {
+            "id": 1,
+            "name": "林木测距",
+            "type": 1,
+            "leftPath":"../assets/stereoImg/rect_left/9.png",
+            "rightPath":"../assets/stereoImg/rect_right/9.png",
+            "result":"215",
+            "date": "2023-11-25"
+        },
+        {
+            "id": 2,
+            "name": "立木高度测量",
+            "type": 2,
+            "leftPath":"../assets/stereoImg/rect_left/9.png",
+            "rightPath":"../assets/stereoImg/rect_right/9.png",
+            "result":"215",
+            "date": "2023-11-25"
+        },
+        {
+            "id": 3,
+            "name": "胸径测量",
+            "type": 3,
+            "leftPath":"../assets/stereoImg/rect_left/9.png",
+            "rightPath":"../assets/stereoImg/rect_right/9.png",
+            "result":"215",
+            "date": "2023-11-25"
+        },
+        {
+            "id": 4,
+            "name": "植物叶片识别",
+            "type": 4,
+            "leftPath":"../assets/leafImg/1135.jpg",
+            "rightPath":"",
+            "result":"215",
+            "date": "2023-11-25"
+        }
+    ],
+    "pageTotal": 4
+}
