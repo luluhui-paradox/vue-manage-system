@@ -2,63 +2,63 @@
     "list": [
         {
             "id": 1,
-            "name": "string",
+            "name": "林帅",
             "money": 12,
-            "email":"tring",
-            "phone":"string",
+            "email":"3564411819@qq.com",
+            "phone":"13699807531",
             "role":"管理员",
             "date": "2023-11-25",
-            "proLevel": "string"
+            "proLevel": "中级"
         },
         {
             "id": 2,
-            "name": "string",
+            "name": "张浩",
             "money": 12,
-            "email":"tring",
-            "phone":"string",
+            "email":"4966688258@qq.com",
+            "phone":"18011451419",
             "role":"管理员",
-            "date": "2023-11-25",
-            "proLevel": "string"
+            "date": "2023-10-08",
+            "proLevel": "初级"
         },
         {
             "id": 3,
-            "name": "string",
+            "name": "李田所",
             "money": 12,
-            "email":"tring",
-            "phone":"string",
-            "role":"员工",
-            "date": "2023-11-25",
-            "proLevel": "string"
+            "email":"litiansuo114514@gmail.com",
+            "phone":"19198101145",
+            "role":"普通用户",
+            "date": "2023-11-04",
+            "proLevel": "初级"
         },
         {
             "id": 4,
-            "name": "string",
+            "name": "elphelt valentine",
             "money": 12,
-            "email":"tring",
-            "phone":"string",
+            "email":"2022totsugeki@gmail.com",
+            "phone":"15667890324",
             "role":"普通用户",
-            "date": "2023-11-25",
-            "proLevel": "string"
+            "date": "2023-12-15",
+            "proLevel": "高级"
         },
         {
             "id": 5,
-            "name": "string",
+            "name": "ramlethal valentine",
             "money": 12,
-            "email":"tring",
-            "phone":"string",
+            "email":"2022error11037@gmail.com",
+            "phone":"15678905542",
             "role":"普通用户",
-            "date": "2023-11-25",
-            "proLevel": "string"
+            "date": "2023-12-20",
+            "proLevel": "高级"
         },
         {
             "id": 6,
-            "name": "string",
+            "name": "刘建国",
             "money": 12,
-            "email":"tring",
-            "phone":"string",
-            "role":"管理员",
-            "date": "2023-11-25",
-            "proLevel": "string"
+            "email":"liu6657upup@gmail.com",
+            "phone":"15666579090",
+            "role":"普通用户",
+            "date": "2023-12-28",
+            "proLevel": "高级"
         }
     ],
     "pageTotal": 6

@@ -95,6 +95,7 @@ import { Lock, User } from '@element-plus/icons-vue';
 import { throttledWatch } from '@vueuse/shared';
 import App from '../App.vue';
 import imgex from '../assets/leafImg/1135.jpg';
+import leaf_pic from '../assets/leafImg/aesculus_flava.jpg';
 
 const leftImgUrl=ref("");
 const resImgUrl=ref("");
@@ -157,8 +158,8 @@ const handleLeafRecog=()=>{
     })
     setTimeout(()=>{
         loading.close()
-        resultForm.result1="胡桃木"
-        resImgUrl.value=imgex
+        resultForm.result1="红七叶树"
+        resImgUrl.value=leaf_pic
     },2000)
 }
 

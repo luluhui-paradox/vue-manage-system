@@ -338,7 +338,7 @@ const onRes1CanvasConfirm=()=>{
         depthIsVisible.value=false;
         loading.value=false;
         //add data
-        resultForm.result1="123"
+        resultForm.result1="215"
         //show message
         ElMessage.info("测量成功")
     },2000)
@@ -406,7 +406,7 @@ const onRes2CanvasConfirm=()=>{
         loading.value=false;
         heightShowLabel.value="立木基点"
         //add data
-        resultForm.result2="456"
+        resultForm.result2="296"
         //show message
         ElMessage.info("测量成功")
     },2000)
@@ -466,7 +466,7 @@ const onRes3CanvasConfirm=()=>{
         circleIsVisible.value=false;
         loading.value=false;
         //add data
-        resultForm.result3="789"
+        resultForm.result3="43"
         //show message
         ElMessage.info("测量成功")
     },2000)

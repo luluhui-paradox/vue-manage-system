@@ -14,9 +14,9 @@
 			<el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
 				<el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
 				<el-table-column prop="name" label="用户名"></el-table-column>
-				<el-table-column label="账户余额">
+				<!-- <el-table-column label="账户余额">
 					<template #default="scope">￥{{ scope.row.money }}</template>
-				</el-table-column>
+				</el-table-column> -->
 				<el-table-column prop="phone" label="手机号"></el-table-column>
 				<el-table-column prop="email" label="邮箱"></el-table-column>
 				<el-table-column prop="role" label="权限"></el-table-column>
@@ -46,7 +46,7 @@
 		</div>
 
 		<!-- 编辑弹出框 -->
-		<el-dialog title="编辑" v-model="editVisible" width="30%">
+		<el-dialog title="编辑用户信息" v-model="editVisible" width="30%">
 			<el-form label-width="70px">
 				<el-form-item label="用户名">
 					<el-input v-model="form.name"></el-input>
@@ -58,7 +58,24 @@
 					<el-input v-model="form.email"></el-input>
 				</el-form-item>
 				<el-form-item label="职级">
-					<el-input v-model="form.proLevel"></el-input>
+					<el-select v-model="form.proLevel" class="m-2" placeholder="Select" size="large">
+						<el-option
+							v-for="item in proLevel_options"
+							:key="item.value"
+							:label="item.label"
+							:value="item.value"
+						/>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="权限">
+					<el-select v-model="form.role" class="m-2" placeholder="Select" size="large">
+						<el-option
+							v-for="item in role_options"
+							:key="item.value"
+							:label="item.label"
+							:value="item.value"
+						/>
+					</el-select>
 				</el-form-item>
 			</el-form>
 			<template #footer>
@@ -70,7 +87,7 @@
 		</el-dialog>
 
 		<!-- 添加用户弹出框 -->
-		<el-dialog title="编辑" v-model="addUserVisible" width="30%">
+		<el-dialog title="添加新用户" v-model="addUserVisible" width="30%">
 			<el-form label-width="70px">
 				<el-form-item label="用户名">
 					<el-input v-model="adduser_form.name"></el-input>
@@ -82,10 +99,24 @@
 					<el-input v-model="adduser_form.email"></el-input>
 				</el-form-item>
 				<el-form-item label="职级">
-					<el-input v-model="adduser_form.proLevel"></el-input>
+					<el-select v-model="adduser_form.proLevel" class="m-2" placeholder="Select" size="large">
+						<el-option
+							v-for="item in proLevel_options"
+							:key="item.value"
+							:label="item.label"
+							:value="item.value"
+						/>
+					</el-select>
 				</el-form-item>
 				<el-form-item label="权限">
-					<el-input v-model="adduser_form.role"></el-input>
+					<el-select v-model="adduser_form.role" class="m-2" placeholder="Select" size="large">
+						<el-option
+							v-for="item in role_options"
+							:key="item.value"
+							:label="item.label"
+							:value="item.value"
+						/>
+					</el-select>
 				</el-form-item>
 			</el-form>
 			<template #footer>
@@ -163,6 +194,7 @@ let form = reactive({
 	phone:'',
 	email:'',
 	proLevel:'',
+	role:''
 });
 let idx: number = -1;
 const handleEdit = (index: number, row: any) => {
@@ -171,6 +203,7 @@ const handleEdit = (index: number, row: any) => {
 	form.phone = row.phone;
 	form.email = row.email;
 	form.proLevel = row.proLevel;
+	form.role=row.role;
 	editVisible.value = true;
 };
 const saveEdit = () => {
@@ -180,6 +213,7 @@ const saveEdit = () => {
 	tableData.value[idx].phone = form.phone;
 	tableData.value[idx].email = form.email;
 	tableData.value[idx].proLevel = form.proLevel;
+	tableData.value[idx].role = form.role;
 };
 
 // 表格新增元素编辑时弹窗和保存
@@ -221,6 +255,34 @@ const userAddSaveEdit = () => {
 	pageTotal.value=tableData.value.length;
 
 };
+
+//职级选项
+const proLevel_options = [
+  {
+    value: '初级',
+    label: '初级',
+  },
+  {
+    value: '中级',
+    label: '中级',
+  },
+  {
+    value: '高级',
+    label: '高级',
+  },
+];
+//权限选项
+const role_options = [
+  {
+    value: '管理员',
+    label: '管理员',
+  },
+  {
+    value: '普通用户',
+    label: '普通用户',
+  },
+];
+
 </script>
 
 <style scoped>
